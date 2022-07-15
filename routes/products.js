@@ -66,7 +66,7 @@ router.post(`/`, uploadOptions.single('image'), async (req, res) => {
         name: req.body.name,
         description: req.body.description,
         richDescription: req.body.richDescription,
-        image: `${basePath}${fileName}`, // "http://localhost:3000/public/upload/image-2323232"
+        image: `${basePath}${fileName}`,
         brand: req.body.brand,
         price: req.body.price,
         category: req.body.category,
@@ -170,13 +170,13 @@ router.get(`/get/featured/:count`, async (req, res) => {
     res.send(products);
 });
 
-router.put(
-    '/gallery-images/:id',
+router.put('/gallery-images/:id',
     uploadOptions.array('images', 10),
     async (req, res) => {
         if (!mongoose.isValidObjectId(req.params.id)) {
             return res.status(400).send('Invalid Product Id');
         }
+        
         const files = req.files;
         let imagesPaths = [];
         const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`;
