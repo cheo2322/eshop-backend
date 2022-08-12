@@ -1,7 +1,6 @@
 const { Order } = require('../models/order');
 const express = require('express');
 const { OrderItem } = require('../models/order-item');
-const { Product } = require('../models/product');
 const router = express.Router();
 
 router.get(`/`, async (req, res) => {
@@ -35,14 +34,9 @@ router.get(`/:id`, async (req, res) => {
 router.post('/', async (req, res) => {
   const orderItemsIds = Promise.all(
     req.body.orderItems.map(async (orderItem) => {
-      console.log(req.body.orderItems);
-      const product = await Product.findById(orderItem.product.id).populate(
-        'category'
-      );
-
       let newOrderItem = new OrderItem({
-        quantity: 1,
-        product: product,
+        quantity: orderItem.quantity,
+        product: orderItem.product,
       });
 
       newOrderItem = await newOrderItem.save();
